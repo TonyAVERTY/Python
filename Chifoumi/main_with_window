@@ -1,0 +1,79 @@
+import tkinter as tk
+from random import choice
+
+
+choix = ("🪨 Pierre", "📄 Feuille", "✂️ Ciseaux") # Définir la pierre, la feuille, et les ciseaux
+
+
+def jouer(choix_joueur):
+    
+    choix_ordinateur = choice(range(3)) # Choix aléatoire de l'ordinateur
+
+    
+    label_choix_joueur.config(text=choix[choix_joueur])# Affichier les choix dans les labels
+    label_choix_ordinateur.config(text=choix[choix_ordinateur])
+
+    
+    if choix_joueur == choix_ordinateur: # Vérifier du résultat du jeu
+        label_resultat.config(text="🤝 ÉGALITÉ", fg="#4d4dff")
+    elif (choix_joueur > choix_ordinateur and choix_ordinateur + 1 == choix_joueur) or (choix_joueur < choix_ordinateur and choix_joueur + choix_ordinateur == 2):
+        label_resultat.config(text="🎉 VOUS GAGNEZ 🎉", fg="#00e600")
+    else:
+        label_resultat.config(text="💥 VOUS PERDEZ 💥", fg="#ff3333")
+
+fenetre = tk.Tk() # Crée de la fenêtre principale
+fenetre.title("🎮 Pierre - Feuille - Ciseaux 🎮") # Dire quel est le nom de la page
+
+fenetre.config(bg="#222222") # Couleur de l'arrière plan
+fenetre.geometry("500x600") # Taille de la fenêtre
+fenetre.resizable(False, False) # Ne pas pouvoir modifier la taille.
+
+
+label_titre = tk.Label(fenetre, text="🎮 Pierre - Feuille - Ciseaux 🎮", font=("Helvetica", 24, 'bold'), fg="#00bfff", bg="#222222") # Titre du jeu, avec du style
+label_titre.pack(pady=20)
+
+
+label_choix_joueur = tk.Label(fenetre, text="", font=("Helvetica", 16), fg="#f1c40f", bg="#222222")  # Afficher les choix de l'utilisateur
+label_choix_joueur.pack(pady=10)
+
+label_choix_ordinateur = tk.Label(fenetre, text="", font=("Helvetica", 16), fg="#e74c3c", bg="#222222")
+label_choix_ordinateur.pack(pady=10)
+
+
+label_resultat = tk.Label(fenetre, text="", font=("Helvetica", 18), bg="#222222") # Résultat du jeu
+label_resultat.pack(pady=20)
+
+def choisir_pierre():
+    jouer(0)
+
+def choisir_feuille():
+    jouer(1)
+
+def choisir_ciseaux():
+    jouer(2)
+
+button_pierre = tk.Button(fenetre, text="🪨 Pierre", command=choisir_pierre, font=("Helvetica", 18), bg="#2980b9", fg="white", relief="flat", bd=0)
+button_pierre.pack(side="left", padx=20, pady=20)
+
+button_feuille = tk.Button(fenetre, text="📄 Feuille", command=choisir_feuille, font=("Helvetica", 18), bg="#27ae60", fg="white", relief="flat", bd=0)
+button_feuille.pack(side="left", padx=20, pady=20)
+
+button_ciseaux = tk.Button(fenetre, text="✂️ Ciseaux", command=choisir_ciseaux, font=("Helvetica", 18), bg="#e74c3c", fg="white", relief="flat", bd=0)
+button_ciseaux.pack(side="left", padx=20, pady=20)
+
+def on_enter(event, button, color):
+    button.config(bg=color)
+
+def on_leave(event, button, original_color):
+    button.config(bg=original_color)
+
+button_pierre.bind("<Enter>", lambda e, button=button_pierre: on_enter(e, button, "#3498db"))
+button_pierre.bind("<Leave>", lambda e, button=button_pierre: on_leave(e, button, "#2980b9"))
+
+button_feuille.bind("<Enter>", lambda e, button=button_feuille: on_enter(e, button, "#2ecc71"))
+button_feuille.bind("<Leave>", lambda e, button=button_feuille: on_leave(e, button, "#27ae60"))
+
+button_ciseaux.bind("<Enter>", lambda e, button=button_ciseaux: on_enter(e, button, "#e67e22"))
+button_ciseaux.bind("<Leave>", lambda e, button=button_ciseaux: on_leave(e, button, "#e74c3c"))
+
+fenetre.mainloop()
